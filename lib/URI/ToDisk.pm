@@ -4,7 +4,7 @@ package URI::ToDisk;
 
 =head1 NAME
 
-URI::ToDisk - Working with disk to URI file mappings
+URI::ToDisk - An object for mapping a URI to an on-disk storage directory
 
 =head1 SYNOPSIS
 
@@ -74,11 +74,14 @@ because all that stuff happens internally as needed.
 
 =cut
 
+use 5.005;
 use strict;
 use base 'Clone';
 use URI              ();
 use File::Spec       ();
 use File::Spec::Unix ();
+use Params::Util     '_INSTANCE',
+                     '_ARRAY';
 
 # Overload stringification to the string form of the URL.
 use overload 'bool' => sub () { 1 },
@@ -87,7 +90,7 @@ use overload 'bool' => sub () { 1 },
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '1.08';
+	$VERSION = '1.09';
 }
 
 
@@ -140,12 +143,10 @@ Returns a URI::ToDisk if possible, or C<undef> if one cannot be provided.
 
 sub param {
 	my $class = shift;
-	return shift if UNIVERSAL::isa(ref $_[0], 'URI::ToDisk');
-	return URI::ToDisk->new(@_) if @_ == 2;
-	if ( ref $_[0] eq 'ARRAY' and @{$_[0]} ) {
-		return URI::ToDisk->new(@{$_[0]});
-	}
-	undef;	
+	return shift                      if _INSTANCE($_[0], 'URI::ToDisk');
+	return URI::ToDisk->new(@_)       if @_ == 2;
+	return URI::ToDisk->new(@{$_[0]}) if _ARRAY($_[0]);
+	return undef;
 }
 
 
@@ -260,8 +261,8 @@ sub catfile {
 # Additional Overload Methods
 
 sub __eq {
-	my $left  = UNIVERSAL::isa(ref $_[0], 'URI::ToDisk') ? shift : return '';
-	my $right = UNIVERSAL::isa(ref $_[0], 'URI::ToDisk') ? shift : return '';
+	my $left  = _INSTANCE(shift, 'URI::ToDisk') or return '';
+	my $right = _INSTANCE(shift, 'URI::ToDisk') or return '';
 	($left->path eq $right->path) and ($left->uri eq $right->uri);
 }
 
@@ -296,7 +297,7 @@ Adam Kennedy L<http://ali.as/>, cpan@ali.as
 
 =head1 COPYRIGHT
 
-Copyright (c) 2003 - 2005 Adam Kennedy. All rights reserved.
+Copyright (c) 2003 - 2006 Adam Kennedy. All rights reserved.
 
 This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.

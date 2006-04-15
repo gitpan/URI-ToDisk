@@ -1,17 +1,13 @@
 use inc::Module::Install;
 
-name          ( 'URI-ToDisk'                 );
-abstract      ( 'Create and manipulate URI to filesystem path mappings' );
-author        ( 'Adam Kennedy <cpan@ali.as>' );
-version_from  ( 'lib/URI/ToDisk.pm'          );
-license       ( 'perl'                       );
-requires      ( 'perl'            => '5.005' );
-requires      ( 'Clone'           => '0.13'  );
-requires      ( 'List::Util'      => '1.11'  );
-requires      ( 'URI'             => 0       );
-build_requires( 'Test::More'      => '0.47'  );
-build_requires( 'File::Spec'      => '0.80'  );
+name           'URI-ToDisk';
+all_from       'lib/URI/ToDisk.pm';
+requires       'Clone'           => '0.13';
+requires       'List::Util'      => '1.11';
+requires       'URI'             => 0;
+requires       'Params::Util'    => '0.10';
+build_requires 'Test::More'      => '0.47';
+build_requires 'File::Spec'      => '0.80';
 
-auto_install();
-
-&WriteAll;
+auto_install;
+WriteAll;

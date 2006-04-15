@@ -1,18 +1,21 @@
-name: URI-ToDisk
-version: 1.08
-abstract: Create and manipulate URI to filesystem path mappings
-author: Adam Kennedy <cpan@ali.as>
-license: perl
+
+no_index: 
+  directory: 
+    - inc
+    - t
+generated_by: Module::Install version 0.62
 distribution_type: module
-build_requires:
+version: 1.09
+name: URI-ToDisk
+author: Adam Kennedy L<http://ali.as/>, cpan@ali.as
+license: perl
+build_requires: 
   Test::More: 0.47
   File::Spec: 0.80
-requires:
-  perl: 5.005
-  Clone: 0.13
+requires: 
   List::Util: 1.11
+  perl: 5.005
+  Params::Util: 0.10
   URI: 0
-no_index:
-  directory:
-    - inc
-generated_by: Module::Install version 0.37
+  Clone: 0.13
+abstract: An object for mapping a URI to an on-disk storage directory
